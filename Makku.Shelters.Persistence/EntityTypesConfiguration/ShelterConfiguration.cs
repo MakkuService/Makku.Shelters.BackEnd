@@ -1,11 +1,6 @@
 ﻿using Makku.Shelters.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Makku.Shelters.Persistence.EntityTypesConfiguration
 {
@@ -13,7 +8,9 @@ namespace Makku.Shelters.Persistence.EntityTypesConfiguration
     {
         public void Configure(EntityTypeBuilder<Shelter> builder)
         {
-            throw new NotImplementedException();
+            builder.HasKey(shelter => shelter.Id);
+            builder.HasIndex(shelter => shelter.Id).IsUnique();
+            builder.Property(shelter => shelter.Id).HasMaxLength(250);
         }
     }
 }
