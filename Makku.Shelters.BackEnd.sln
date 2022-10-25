@@ -1,0 +1,57 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{A299805F-4EE1-4105-AF76-C36A56B05BB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{93EB0DDA-472B-499F-84DC-B3992BC87BF5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{26A8A2A1-8164-4CBE-ABF1-80CC26B7AAD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8A0BDA5-0372-46D9-82D7-AD6B0EC76214}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Domain", "Makku.Shelters.Domain\Makku.Shelters.Domain.csproj", "{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Application", "Makku.Shelters.Application\Makku.Shelters.Application.csproj", "{A5EF8703-8B36-4706-976C-67FE28590765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Persistence", "Makku.Shelters.Persistence\Makku.Shelters.Persistence.csproj", "{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.WebApi", "Makku.Shelters.WebApi\Makku.Shelters.WebApi.csproj", "{0E9336CC-FAA7-4BE1-8647-5872EFF02336}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5EF8703-8B36-4706-976C-67FE28590765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5EF8703-8B36-4706-976C-67FE28590765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5EF8703-8B36-4706-976C-67FE28590765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5EF8703-8B36-4706-976C-67FE28590765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69} = {A299805F-4EE1-4105-AF76-C36A56B05BB5}
+		{A5EF8703-8B36-4706-976C-67FE28590765} = {A299805F-4EE1-4105-AF76-C36A56B05BB5}
+		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530} = {26A8A2A1-8164-4CBE-ABF1-80CC26B7AAD1}
+		{0E9336CC-FAA7-4BE1-8647-5872EFF02336} = {93EB0DDA-472B-499F-84DC-B3992BC87BF5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FC4728FC-F425-4E9B-B308-F67DA30A6B53}
+	EndGlobalSection
+EndGlobal
