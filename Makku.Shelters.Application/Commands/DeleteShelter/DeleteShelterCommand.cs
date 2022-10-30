@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
 
 namespace Makku.Shelters.Application.Commands.DeleteShelter
 {
-    public class DeleteShelterCommand
+    public class DeleteShelterCommand : IRequest
     {
-
+        public Guid Id { get; set; }
     }
 }
