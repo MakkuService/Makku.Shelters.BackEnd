@@ -9,7 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.15.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Makku.Shelters.Application\Makku.Shelters.Application.csproj" />
+    <ProjectReference Include="..\Makku.Shelters.Persistence\Makku.Shelters.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

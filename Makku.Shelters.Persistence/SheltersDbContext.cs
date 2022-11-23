@@ -7,6 +7,7 @@ using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Domain;
 using Makku.Shelters.Persistence.EntityTypesConfiguration;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Makku.Shelters.Persistence
 {
