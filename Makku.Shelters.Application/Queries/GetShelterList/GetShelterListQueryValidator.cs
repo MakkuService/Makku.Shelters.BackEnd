@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FluentValidation;
 
 namespace Makku.Shelters.Application.Queries.GetShelterList
 {
-    public class GetShelterListQueryValidator
+    public class GetShelterListQueryValidator : AbstractValidator<GetShelterListQuery>
     {
-
+        public GetShelterListQueryValidator()
+        {
+            RuleFor(getShelterListQuery => getShelterListQuery.UserId).NotEqual(Guid.Empty).NotNull();
+        }
     }
 }
