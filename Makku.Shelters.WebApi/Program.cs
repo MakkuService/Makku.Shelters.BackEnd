@@ -3,6 +3,7 @@ using Makku.Shelters.Application;
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Persistence;
+using Makku.Shelters.WebApi.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -41,6 +42,8 @@ using (var scope = app.Services.CreateScope())
         throw;
     }
 }
+
+app.UseCustomExceptionHandler();
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
