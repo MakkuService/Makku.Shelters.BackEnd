@@ -5,10 +5,12 @@ using Makku.Shelters.Application.Commands.UpdateShelter;
 using Makku.Shelters.Application.Queries.GetShelterDetails;
 using Makku.Shelters.Application.Queries.GetShelterList;
 using Makku.Shelters.WebApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Makku.Shelters.WebApi.Controllers
 {
+    [Produces("application/json")]
     [Route("api/[controller]")]
     public class ShelterController : BaseController
     {
@@ -16,7 +18,19 @@ namespace Makku.Shelters.WebApi.Controllers
 
         public ShelterController(IMapper mapper) => _mapper = mapper;
 
+        /// <summary>
+        /// Gets list of shelters
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// GET /shelter
+        /// </remarks>
+        /// <returns>Returns ShelterListVm</returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">If the user is unauthorized</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ShelterListVm>> GetAll()
         {
             var query = new GetShelterListQuery
@@ -27,7 +41,20 @@ namespace Makku.Shelters.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Gets the shelter by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// GET /shelter/D34D349E-43B8-429E-BCA4-793C932FD580
+        /// </remarks>
+        /// <param name="id">Shelter id (guid)</param>
+        /// <returns>Returns ShelterDetailsVm</returns>
+        /// <response code="200">Success</response>
+        /// <response code="401">If the user in unauthorized</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ShelterDetailsVm>> Get(Guid id)
         {
             var query = new GetShelterDetailsQuery
@@ -39,7 +66,24 @@ namespace Makku.Shelters.WebApi.Controllers
             return Ok(vm);
         }
 
+        /// <summary>
+        /// Creates the shelter
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// POST /shelter
+        /// {
+        ///     title: "shelter title",
+        ///     details: "shelter details"
+        /// }
+        /// </remarks>
+        /// <param name="createShelterDto">createShelterDto object</param>
+        /// <returns>Returns id (guid)</returns>
+        /// <response code="201">Success</response>
+        /// <response code="401">If the user is unauthorized</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<Guid>> Create([FromBody] CreateShelterDto createShelterDto)
         {
             var command = _mapper.Map<CreateShelterCommand>(createShelterDto);
@@ -48,16 +92,45 @@ namespace Makku.Shelters.WebApi.Controllers
             return Ok(noteId);
         }
 
+        /// <summary>
+        /// Updates the shelter
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// PUT /shelter
+        /// {
+        ///     name: "updated shelter name"
+        /// }
+        /// </remarks>
+        /// <param name="updateShelterDto">updateShelterDto object</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If the user is unauthorized</response>
         [HttpPut]
-        public async Task<IActionResult> Update([FromBody] UpdateShelterDto updateNoteDto)
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> Update([FromBody] UpdateShelterDto updateShelterDto)
         {
-            var command = _mapper.Map<UpdateShelterCommand>(updateNoteDto);
+            var command = _mapper.Map<UpdateShelterCommand>(updateShelterDto);
             command.UserId = UserId;
             await Mediator.Send(command);
             return NoContent();
         }
 
+        /// <summary>
+        /// Deletes the shelter by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// DELETE /shelter/88DEB432-062F-43DE-8DCD-8B6EF79073D3
+        /// </remarks>
+        /// <param name="id">Id of the shelter (guid)</param>
+        /// <returns>Returns NoContent</returns>
+        /// <response code="204">Success</response>
+        /// <response code="401">If the user is unauthorized</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Delete(Guid id)
         {
             var command = new DeleteShelterCommand
