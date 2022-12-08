@@ -11,13 +11,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C8A0BDA5-0372-46D9-82D7-AD6B0EC76214}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Domain", "Makku.Shelters.Domain\Makku.Shelters.Domain.csproj", "{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makku.Shelters.Domain", "Makku.Shelters.Domain\Makku.Shelters.Domain.csproj", "{8444B4BD-A9DD-4910-8AF7-9CCD2D5BCE69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Application", "Makku.Shelters.Application\Makku.Shelters.Application.csproj", "{A5EF8703-8B36-4706-976C-67FE28590765}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makku.Shelters.Application", "Makku.Shelters.Application\Makku.Shelters.Application.csproj", "{A5EF8703-8B36-4706-976C-67FE28590765}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.Persistence", "Makku.Shelters.Persistence\Makku.Shelters.Persistence.csproj", "{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makku.Shelters.Persistence", "Makku.Shelters.Persistence\Makku.Shelters.Persistence.csproj", "{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Makku.Shelters.WebApi", "Makku.Shelters.WebApi\Makku.Shelters.WebApi.csproj", "{0E9336CC-FAA7-4BE1-8647-5872EFF02336}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Makku.Shelters.WebApi", "Makku.Shelters.WebApi\Makku.Shelters.WebApi.csproj", "{0E9336CC-FAA7-4BE1-8647-5872EFF02336}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shelters.Tests", "Shelters.Tests\Shelters.Tests.csproj", "{DB9E5C09-34FD-4341-8033-92AAF27502DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E9336CC-FAA7-4BE1-8647-5872EFF02336}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB9E5C09-34FD-4341-8033-92AAF27502DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB9E5C09-34FD-4341-8033-92AAF27502DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB9E5C09-34FD-4341-8033-92AAF27502DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB9E5C09-34FD-4341-8033-92AAF27502DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,6 +56,7 @@ Global
 		{A5EF8703-8B36-4706-976C-67FE28590765} = {A299805F-4EE1-4105-AF76-C36A56B05BB5}
 		{426B0D46-6F9D-4D49-B3B7-1E1CFDB70530} = {26A8A2A1-8164-4CBE-ABF1-80CC26B7AAD1}
 		{0E9336CC-FAA7-4BE1-8647-5872EFF02336} = {93EB0DDA-472B-499F-84DC-B3992BC87BF5}
+		{DB9E5C09-34FD-4341-8033-92AAF27502DF} = {C8A0BDA5-0372-46D9-82D7-AD6B0EC76214}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FC4728FC-F425-4E9B-B308-F67DA30A6B53}
