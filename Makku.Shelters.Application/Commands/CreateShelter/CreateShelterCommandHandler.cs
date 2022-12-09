@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Makku.Shelters.Application.Interfaces;
+﻿using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Domain;
 using MediatR;
 
@@ -17,7 +12,8 @@ namespace Makku.Shelters.Application.Commands.CreateShelter
         {
             var shelter = new Shelter()
             {
-                Name = request.Name
+                Name = request.Name,
+                UserId = request.UserId,
             };
 
             await _dbContext.Shelters.AddAsync(shelter, cancellationToken);

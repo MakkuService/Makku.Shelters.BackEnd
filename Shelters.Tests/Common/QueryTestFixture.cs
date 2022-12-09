@@ -21,10 +21,7 @@ namespace Shelters.Tests.Common
             Mapper = configurationProvider.CreateMapper();
         }
 
-        public void Dispose()
-        {
-            SheltersContextFactory.Destroy(Context);
-        }
+        public void Dispose() => SheltersContextFactory.Destroy(Context);
     }
 
     [CollectionDefinition("QueryCollection")]

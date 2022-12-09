@@ -2,18 +2,12 @@
 
 namespace Shelters.Tests.Common
 {
-    public abstract class TestCommandBase
+    public abstract class TestCommandBase : IDisposable
     {
         protected readonly SheltersDbContext Context;
 
-        public TestCommandBase()
-        {
-            Context = SheltersContextFactory.Create();
-        }
+        protected TestCommandBase() => Context = SheltersContextFactory.Create();
 
-        public void Dispose()
-        {
-            SheltersContextFactory.Destroy(Context);
-        }
+        public void Dispose() => SheltersContextFactory.Destroy(Context);
     }
 }
