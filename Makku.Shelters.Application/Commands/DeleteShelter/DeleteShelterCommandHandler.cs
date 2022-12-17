@@ -1,4 +1,6 @@
-﻿using Makku.Shelters.Application.Interfaces;
+﻿using Makku.Shelters.Application.Common.Exceptions;
+using Makku.Shelters.Application.Interfaces;
+using Makku.Shelters.Domain;
 using MediatR;
 
 namespace Makku.Shelters.Application.Commands.DeleteShelter
@@ -14,7 +16,11 @@ namespace Makku.Shelters.Application.Commands.DeleteShelter
             var entity = await _dbContext.Shelters
                 .FindAsync(new object[] { request.Id }, cancellationToken);
 
-
+            if (entity == null || entity.UserId != request.UserId)
+            {
+                throw new NotFoundException(nameof(Shelter), request.Id);
+            }
+            
             _dbContext.Shelters.Remove(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
 

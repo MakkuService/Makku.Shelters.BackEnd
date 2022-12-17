@@ -18,14 +18,14 @@ namespace Shelters.Tests.Shelters.Commands
             await handler.Handle(
                 new UpdateShelterCommand
                 {
-                    Id = SheltersContextFactory.NoteIdForUpdate,
+                    Id = SheltersContextFactory.ShelterIdForUpdate,
                     UserId = SheltersContextFactory.UserBId,
                     Description = newDescription
                 }, CancellationToken.None);
 
             //Assert
             Assert.NotNull(await Context.Shelters
-                .SingleOrDefaultAsync(s => s.Id == SheltersContextFactory.NoteIdForUpdate && s.Description == newDescription));
+                .SingleOrDefaultAsync(s => s.Id == SheltersContextFactory.ShelterIdForUpdate && s.Description == newDescription));
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace Shelters.Tests.Shelters.Commands
                     await handler.Handle(
                         new UpdateShelterCommand
                         {
-                            Id = SheltersContextFactory.NoteIdForUpdate,
+                            Id = SheltersContextFactory.ShelterIdForUpdate,
                             UserId = SheltersContextFactory.UserAId
                         },
                         CancellationToken.None);

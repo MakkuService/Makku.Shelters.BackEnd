@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Makku.Shelters.Application.Common.Exceptions;
 using Makku.Shelters.Application.Interfaces;
+using Makku.Shelters.Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +18,13 @@ namespace Makku.Shelters.Application.Commands.UpdateShelter
                 await _dbContext.Shelters.FirstOrDefaultAsync(note =>
                     note.Id == request.Id, cancellationToken);
 
+            if (entity == null || entity.UserId != request.UserId)
+            {
+                throw new NotFoundException(nameof(Shelter), request.Id);
+            }
+
             entity.Name = request.Name;
+            entity.Description = request.Description;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

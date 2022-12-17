@@ -17,12 +17,12 @@ namespace Shelters.Tests.Shelters.Commands
             await handler.Handle(
                 new DeleteShelterCommand
                 {
-                    Id = SheltersContextFactory.NoteIdForDelete,
+                    Id = SheltersContextFactory.ShelterIdForDelete,
                     UserId = SheltersContextFactory.UserAId
                 }, CancellationToken.None);
 
             //Assert
-            Assert.Null(Context.Shelters.SingleOrDefaultAsync(s => s.Id == SheltersContextFactory.NoteIdForDelete));
+            Assert.Null(await Context.Shelters.SingleOrDefaultAsync(s => s.Id == SheltersContextFactory.ShelterIdForDelete));
         }
 
         [Fact]
@@ -35,7 +35,8 @@ namespace Shelters.Tests.Shelters.Commands
                 new CreateShelterCommand
                 {
                     Name = "Shelter name",
-                    UserId = SheltersContextFactory.UserAId
+                    UserId = SheltersContextFactory.UserAId,
+                    Description = "Desciption"
                 }, CancellationToken.None);
 
             //Assert

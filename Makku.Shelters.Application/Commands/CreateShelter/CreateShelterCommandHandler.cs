@@ -14,6 +14,7 @@ namespace Makku.Shelters.Application.Commands.CreateShelter
             {
                 Name = request.Name,
                 UserId = request.UserId,
+                Description = request.Description
             };
 
             await _dbContext.Shelters.AddAsync(shelter, cancellationToken);

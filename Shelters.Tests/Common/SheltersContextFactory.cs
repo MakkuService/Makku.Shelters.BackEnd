@@ -10,8 +10,8 @@ namespace Shelters.Tests.Common
         public static Guid UserAId = Guid.NewGuid();
         public static Guid UserBId = Guid.NewGuid();
 
-        public static Guid NoteIdForDelete = Guid.NewGuid();
-        public static Guid NoteIdForUpdate = Guid.NewGuid();
+        public static Guid ShelterIdForDelete = Guid.NewGuid();
+        public static Guid ShelterIdForUpdate = Guid.NewGuid();
 
         public static SheltersDbContext Create()
         {
@@ -45,7 +45,7 @@ namespace Shelters.Tests.Common
                     CreatedOn = DateTime.Today,
                     Description = "Description3",
                     ModifiedOn = null,
-                    Id = NoteIdForDelete,
+                    Id = ShelterIdForDelete,
                     Name = "Shelter3",
                     UserId = UserAId
                 },
@@ -54,7 +54,7 @@ namespace Shelters.Tests.Common
                     CreatedOn = DateTime.Today,
                     Description = "Description4",
                     ModifiedOn = null,
-                    Id = NoteIdForUpdate,
+                    Id = ShelterIdForUpdate,
                     Name = "Shelter4",
                     UserId = UserBId
                 }
