@@ -247,3 +247,4 @@ ModelManifest.xml
 .fake/
 Installers/
 output/
+Logs/

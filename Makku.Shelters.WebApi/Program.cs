@@ -4,6 +4,14 @@ using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Persistence;
 using Makku.Shelters.WebApi.Middleware;
+using Makku.Shelters.WebApi.Services;
+using Serilog;
+using Serilog.Events;
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+    .WriteTo.File("Logs/SheltersWebAppLog-.txt", rollingInterval:RollingInterval.Day)
+    .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
 var config = builder.Configuration;
@@ -31,6 +39,9 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
+builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
+builder.Services.AddHttpContextAccessor();
+builder.Host.UseSerilog();
 
 
 var app = builder.Build();
@@ -45,8 +56,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception e)
     {
-        Console.WriteLine(e);
-        throw;
+        Log.Fatal(e, "An error occured while app initialization");
     }
 }
 
@@ -56,6 +66,8 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = string.Empty;
     c.SwaggerEndpoint("swagger/v1/swagger.json", "Shelters API");
 });
+
+
 app.UseCustomExceptionHandler();
 app.UseRouting();
 app.UseHttpsRedirection();
