@@ -6,7 +6,9 @@ using Makku.Shelters.Application.Queries.GetShelterDetails;
 using Makku.Shelters.Application.Queries.GetShelterList;
 using Makku.Shelters.WebApi.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Makku.Shelters.WebApi.Controllers
 {
@@ -15,8 +17,14 @@ namespace Makku.Shelters.WebApi.Controllers
     public class ShelterController : BaseController
     {
         private readonly IMapper _mapper;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public ShelterController(IMapper mapper) => _mapper = mapper;
+
+        public ShelterController(IMapper mapper, UserManager<IdentityUser> userManager)
+        {
+            _mapper = mapper;
+            _userManager = userManager;
+        }
 
         /// <summary>
         /// Gets list of shelters
@@ -33,6 +41,8 @@ namespace Makku.Shelters.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ShelterListVm>> GetAll()
         {
+            var cur = ClaimsPrincipal.Current;
+            var userId = _userManager.GetUserId(cur);
             var query = new GetShelterListQuery
             {
                 UserId = UserId
@@ -88,8 +98,8 @@ namespace Makku.Shelters.WebApi.Controllers
         {
             var command = _mapper.Map<CreateShelterCommand>(createShelterDto);
             command.UserId = UserId;
-            var noteId = await Mediator.Send(command);
-            return Ok(noteId);
+            var shelterID = await Mediator.Send(command);
+            return Ok(shelterID);
         }
 
         /// <summary>

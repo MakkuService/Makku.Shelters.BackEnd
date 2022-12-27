@@ -8,6 +8,8 @@ namespace Makku.Shelters.WebApi.Models
     {
         public string Name { get; set; }
         public Guid UserId { get; set; }
+        public string Description { get; set; }
+
 
         public void Mapping(Profile profile)
         {
