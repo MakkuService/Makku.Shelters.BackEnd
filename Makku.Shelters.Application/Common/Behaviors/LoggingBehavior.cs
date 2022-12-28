@@ -8,7 +8,7 @@ namespace Makku.Shelters.Application.Common.Behaviors
         : IPipelineBehavior<TRequest, TResponse> 
         where TRequest : IRequest<TResponse>
     {
-        private ICurrentUserService _currentUserService;
+        private readonly ICurrentUserService _currentUserService;
 
         public LoggingBehavior(ICurrentUserService currentUserService)
         {

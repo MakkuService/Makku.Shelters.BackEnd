@@ -5,7 +5,6 @@ using Makku.Shelters.Application.Commands.UpdateShelter;
 using Makku.Shelters.Application.Queries.GetShelterDetails;
 using Makku.Shelters.Application.Queries.GetShelterList;
 using Makku.Shelters.WebApi.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -143,7 +142,7 @@ namespace Makku.Shelters.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            var command = new DeleteShelterCommand
+            var command = new DeleteShelterProfileCommand
             {
                 Id = id,
                 UserId = UserId

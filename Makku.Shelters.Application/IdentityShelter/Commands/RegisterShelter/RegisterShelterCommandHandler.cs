@@ -7,19 +7,20 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Security.Claims;
-using Makku.Shelters.Application.Identity.Dtos;
+using Makku.Shelters.Application.IdentityShelter.Commands.RegisterShelter;
+using Makku.Shelters.Application.IdentityShelter.Dtos;
 using Makku.Shelters.Domain.Exceptions;
 using Makku.Shelters.Domain.ShelterProfileAggregate;
 using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Makku.Shelters.Application.Identity.Commands.RegisterShelter
 {
-    public class RegisterShelterCommandHandler : IRequestHandler<RegisterShelterCommand, OperationResult<IdentityShelterProfileDto>>
+    public class RegisterShelterCommandHandler : IRequestHandler<RegisterShelterCommand, OperationResult<IdentityShelterProfileVm>>
     {
         private readonly ISheltersDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IdentityService _identityService;
-        private OperationResult<IdentityShelterProfileDto> _result = new();
+        private OperationResult<IdentityShelterProfileVm> _result = new();
         private readonly IMapper _mapper;
 
         public RegisterShelterCommandHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IdentityService identityService, IMapper mapper)
@@ -30,7 +31,7 @@ namespace Makku.Shelters.Application.Identity.Commands.RegisterShelter
             _mapper = mapper;
         }
 
-        public async Task<OperationResult<IdentityShelterProfileDto>> Handle(RegisterShelterCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<IdentityShelterProfileVm>> Handle(RegisterShelterCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -45,7 +46,7 @@ namespace Makku.Shelters.Application.Identity.Commands.RegisterShelter
                 var profile = await CreateShelterProfileAsync(request, transaction, identity, cancellationToken);
                 await transaction.CommitAsync(cancellationToken);
 
-                _result.Payload = _mapper.Map<IdentityShelterProfileDto>(profile);
+                _result.Payload = _mapper.Map<IdentityShelterProfileVm>(profile);
                 _result.Payload.UserName = identity.UserName;
                 _result.Payload.Token = GetJwtString(identity, profile);
                 return _result;

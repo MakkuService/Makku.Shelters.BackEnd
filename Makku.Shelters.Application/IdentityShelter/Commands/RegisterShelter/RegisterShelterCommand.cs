@@ -1,10 +1,10 @@
-﻿using Makku.Shelters.Application.Identity.Dtos;
+﻿using Makku.Shelters.Application.IdentityShelter.Dtos;
 using Makku.Shelters.Application.Models;
 using MediatR;
 
-namespace Makku.Shelters.Application.Identity.Commands.RegisterShelter
+namespace Makku.Shelters.Application.IdentityShelter.Commands.RegisterShelter
 {
-    public class RegisterShelterCommand : IRequest<OperationResult<IdentityShelterProfileDto>>
+    public class RegisterShelterCommand : IRequest<OperationResult<IdentityShelterProfileVm>>
     {
         public string Username { get; set; }
         public string Email { get; set; }

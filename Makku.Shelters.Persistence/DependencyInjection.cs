@@ -23,13 +23,7 @@ namespace Makku.Shelters.Persistence
         public static IServiceCollection AddAuthenticationPersistence(this IServiceCollection services, IConfiguration configuration)
         {
             
-            services.AddAuthentication(options =>
-                {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-
+            services.AddAuthentication("Bearer")
                 // Adding Jwt Bearer
                 .AddJwtBearer(options =>
                 {
@@ -38,11 +32,11 @@ namespace Makku.Shelters.Persistence
                     options.TokenValidationParameters = new TokenValidationParameters()
                     {
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:SigningKey"])),
                         ValidateIssuer = true,
-                        ValidIssuer = configuration["JWT:ValidIssuer"],
+                        ValidIssuer = configuration["JwtSettings:Issuer"],
                         ValidateAudience = true,
-                        ValidAudience = configuration["JWT:ValidAudience"],
+                        ValidAudience = configuration["JwtSettings:Audiences:0"],
                         RequireExpirationTime = false,
                         ValidateLifetime = true
                     };

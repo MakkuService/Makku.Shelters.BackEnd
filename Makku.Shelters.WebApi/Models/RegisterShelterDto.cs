@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Identity.Commands.RegisterShelter;
+using Makku.Shelters.Application.IdentityShelter.Commands.RegisterShelter;
 
 namespace Makku.Shelters.WebApi.Models
 {

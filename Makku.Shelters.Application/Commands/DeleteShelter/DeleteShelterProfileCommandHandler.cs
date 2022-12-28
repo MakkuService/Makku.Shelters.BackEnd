@@ -5,12 +5,12 @@ using MediatR;
 
 namespace Makku.Shelters.Application.Commands.DeleteShelter
 {
-    public class DeleteShelterCommandHandler : IRequestHandler<DeleteShelterCommand>
+    public class DeleteShelterProfileCommandHandler : IRequestHandler<DeleteShelterProfileCommand>
     {
         private readonly ISheltersDbContext _dbContext;
-        public DeleteShelterCommandHandler(ISheltersDbContext dbContext) => _dbContext = dbContext;
+        public DeleteShelterProfileCommandHandler(ISheltersDbContext dbContext) => _dbContext = dbContext;
 
-        public async Task<Unit> Handle(DeleteShelterCommand request,
+        public async Task<Unit> Handle(DeleteShelterProfileCommand request,
             CancellationToken cancellationToken)
         {
             var entity = await _dbContext.Shelters

@@ -2,9 +2,9 @@
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Domain.ShelterProfileAggregate;
 
-namespace Makku.Shelters.Application.Identity.Dtos
+namespace Makku.Shelters.Application.IdentityShelter.Dtos
 {
-    public class IdentityShelterProfileDto : IMapWith<ShelterProfile>
+    public class IdentityShelterProfileVm : IMapWith<ShelterProfile>
     {
         public string UserName { get; set; }
         public string EmailAddress { get; set; }
@@ -13,7 +13,7 @@ namespace Makku.Shelters.Application.Identity.Dtos
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<ShelterProfile, IdentityShelterProfileDto>()
+            profile.CreateMap<ShelterProfile, IdentityShelterProfileVm>()
                 .ForMember(dest => dest.EmailAddress, opt
                     => opt.MapFrom(src => src.BasicInfo.Email))
                 .ForMember(dest => dest.ShelterName, opt

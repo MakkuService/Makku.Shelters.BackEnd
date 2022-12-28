@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
 using AutoMapper;
 using Makku.Shelters.Application.Enums;
-using Makku.Shelters.Application.Identity.Dtos;
+using Makku.Shelters.Application.IdentityShelter.Commands.LoginShelter;
+using Makku.Shelters.Application.IdentityShelter.Dtos;
 using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Application.Models;
 using Makku.Shelters.Application.Services;
@@ -13,12 +14,12 @@ using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace Makku.Shelters.Application.Identity.Commands.LoginShelter
 {
-    public class LoginShelterCommandHandler : IRequestHandler<LoginShelterCommand, OperationResult<IdentityShelterProfileDto>>
+    public class LoginShelterCommandHandler : IRequestHandler<LoginShelterCommand, OperationResult<IdentityShelterProfileVm>>
     {
         private readonly ISheltersDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IdentityService _identityService;
-        private OperationResult<IdentityShelterProfileDto> _result = new();
+        private OperationResult<IdentityShelterProfileVm> _result = new();
         private readonly IMapper _mapper;
 
         public LoginShelterCommandHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IdentityService identityService, IMapper mapper)
@@ -28,7 +29,7 @@ namespace Makku.Shelters.Application.Identity.Commands.LoginShelter
             _identityService = identityService;
             _mapper = mapper;
         }
-        public async Task<OperationResult<IdentityShelterProfileDto>> Handle(LoginShelterCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<IdentityShelterProfileVm>> Handle(LoginShelterCommand request, CancellationToken cancellationToken)
         {
             try
             {
@@ -40,7 +41,7 @@ namespace Makku.Shelters.Application.Identity.Commands.LoginShelter
                         cancellationToken);
 
 
-                _result.Payload = _mapper.Map<IdentityShelterProfileDto>(userProfile);
+                _result.Payload = _mapper.Map<IdentityShelterProfileVm>(userProfile);
                 _result.Payload.UserName = identityUser.UserName;
                 _result.Payload.Token = GetJwtString(identityUser, userProfile);
                 return _result;
@@ -56,7 +57,7 @@ namespace Makku.Shelters.Application.Identity.Commands.LoginShelter
 
         private async Task<IdentityUser> ValidateAndGetIdentityAsync(LoginShelterCommand request)
         {
-            var identityUser = await _userManager.FindByNameAsync(request.Username);
+            var identityUser = await _userManager.FindByEmailAsync(request.Email);
 
             if (identityUser is null)
                 _result.AddError(ErrorCode.IdentityUserDoesNotExist,

@@ -1,6 +1,7 @@
 ﻿using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Domain;
 using Makku.Shelters.Domain.ShelterProfileAggregate;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -14,6 +15,16 @@ namespace Makku.Shelters.Persistence
         public Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken)
         {
             return base.Database.BeginTransactionAsync(cancellationToken);
+        }
+
+        public Task<IdentityUser?> IdentityShelter(string identityShelterId, CancellationToken cancellationToken)
+        {
+            return base.Users.FirstOrDefaultAsync(iu => iu.Id == identityShelterId, cancellationToken);
+        }
+
+        public void DeleteIdentityShelter(IdentityUser identityShelter)
+        {
+            base.Users.Remove(identityShelter);
         }
 
         public SheltersDbContext(DbContextOptions<SheltersDbContext> options)

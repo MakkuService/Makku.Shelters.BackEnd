@@ -1,5 +1,5 @@
-﻿using System.Security.Claims;
-using Makku.Shelters.Application.Interfaces;
+﻿using Makku.Shelters.Application.Interfaces;
+using Makku.Shelters.WebApi.Extensions;
 
 namespace Makku.Shelters.WebApi.Services
 {
@@ -13,8 +13,8 @@ namespace Makku.Shelters.WebApi.Services
         {
             get
             {
-                var id = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
-                return string.IsNullOrEmpty(id) ? Guid.Empty : Guid.Parse(id);
+                var id = _httpContextAccessor.HttpContext?.GetIdentityIdClaimValue();
+                return id ?? Guid.Empty;
             }
         }
     }
