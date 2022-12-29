@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Makku.Shelters.Application.Commands.UpdateShelter;
 using Makku.Shelters.Application.Common.Mappings;
+using Makku.Shelters.Application.Shelters.Profile.Commands.UpdateProfile;
 
 namespace Makku.Shelters.WebApi.Models
 {
-    public class UpdateShelterDto : IMapWith<UpdateShelterCommand>
+    public class UpdateShelterDto : IMapWith<UpdateProfileCommand>
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -13,7 +13,7 @@ namespace Makku.Shelters.WebApi.Models
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<UpdateShelterDto, UpdateShelterCommand>()
+            profile.CreateMap<UpdateShelterDto, UpdateProfileCommand>()
                 .ForMember(shelterCommand => shelterCommand.Id,
                     opt => opt.MapFrom(shelterDto => shelterDto.Id))
                 .ForMember(shelterCommand => shelterCommand.Name,

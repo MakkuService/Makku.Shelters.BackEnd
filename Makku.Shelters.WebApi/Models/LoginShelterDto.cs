@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 using Makku.Shelters.Application.Common.Mappings;
-using Makku.Shelters.Application.Identity.Commands.LoginShelter;
-using Makku.Shelters.Application.IdentityShelter.Commands.LoginShelter;
+using Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter;
 
 namespace Makku.Shelters.WebApi.Models
 {

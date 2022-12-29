@@ -4,6 +4,7 @@ using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Application.Services;
 using Makku.Shelters.Persistence;
+using Makku.Shelters.WebApi.Middleware;
 using Makku.Shelters.WebApi.Options;
 using Makku.Shelters.WebApi.Services;
 using Microsoft.AspNetCore.Identity;
@@ -14,8 +15,10 @@ using Serilog;
 using Serilog.Events;
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-    .WriteTo.File("Logs/SheltersWebAppLog-.txt", rollingInterval:RollingInterval.Day)
+    .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+    .WriteTo.File(path: "Logs/{Date}.log", 
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}|{Level:u4}|{Message:lj}{NewLine}{Exception}",
+        rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
 var builder = WebApplication.CreateBuilder(args);
@@ -116,12 +119,11 @@ app.UseSwaggerUI(options =>
         options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
             description.ApiVersion.ToString());
     }
-    //options.SwaggerEndpoint("swagger/v1/swagger.json", "Shelters API");
 });
 
 
-//app.UseCustomExceptionHandler();
-//app.UseRouting();
+app.UseCustomExceptionHandler();
+app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowAll");
 

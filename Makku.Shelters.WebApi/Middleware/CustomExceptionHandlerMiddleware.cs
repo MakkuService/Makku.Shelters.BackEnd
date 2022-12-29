@@ -37,13 +37,25 @@ namespace Makku.Shelters.WebApi.Middleware
                 case NotFoundException:
                     code = HttpStatusCode.NotFound;
                     break;
+                case ConflictException:
+                    code = HttpStatusCode.Conflict;
+                    break;
+                case NotCreatedException:
+                    code = HttpStatusCode.Accepted;
+                    break;
+                case NotValidException:
+                    code = HttpStatusCode.BadRequest;
+                    break;
+                case ForbiddenException:
+                    code = HttpStatusCode.Forbidden;
+                    break;
             }
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
 
             if (result == string.Empty)
             {
-                result = JsonSerializer.Serialize(new { errpr = exception.Message });
+                result = JsonSerializer.Serialize(new { error = exception.Message });
             }
 
             return context.Response.WriteAsync(result);

@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Makku.Shelters.Domain.ShelterProfileAggregate
+﻿namespace Makku.Shelters.Domain.ShelterProfileAggregate
 {
     public class ShelterProfile
     {

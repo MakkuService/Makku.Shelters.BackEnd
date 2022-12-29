@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Makku.Shelters.Application.Queries.GetShelterDetails;
+using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails;
 using Makku.Shelters.Persistence;
 using Shelters.Tests.Common;
 using Shouldly;

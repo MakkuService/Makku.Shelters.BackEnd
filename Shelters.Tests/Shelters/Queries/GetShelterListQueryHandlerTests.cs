@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Makku.Shelters.Application.Queries.GetShelterList;
+using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList;
 using Makku.Shelters.Domain;
 using Makku.Shelters.Persistence;
 using Shelters.Tests.Common;

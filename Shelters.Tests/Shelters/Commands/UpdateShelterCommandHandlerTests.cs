@@ -1,6 +1,5 @@
-﻿using Makku.Shelters.Application.Commands.DeleteShelter;
-using Makku.Shelters.Application.Commands.UpdateShelter;
-using Makku.Shelters.Application.Common.Exceptions;
+﻿using Makku.Shelters.Application.Common.Exceptions;
+using Makku.Shelters.Application.Shelters.Profile.Commands.UpdateProfile;
 using Microsoft.EntityFrameworkCore;
 using Shelters.Tests.Common;
 
@@ -12,11 +11,11 @@ namespace Shelters.Tests.Shelters.Commands
         public async Task UpdateShelterCommandHandler_Success()
         {
             //Arrange
-            var handler = new UpdateShelterCommandHandler(Context);
+            var handler = new UpdateProfileCommandHandler(Context);
             var newDescription = "new description";
             //Act
             await handler.Handle(
-                new UpdateShelterCommand
+                new UpdateProfileCommand
                 {
                     Id = SheltersContextFactory.ShelterIdForUpdate,
                     UserId = SheltersContextFactory.UserBId,
@@ -32,11 +31,11 @@ namespace Shelters.Tests.Shelters.Commands
         public async Task UpdateShelterCommandHandler_FailOnWrongId()
         {
             //Arrange
-            var handler = new UpdateShelterCommandHandler(Context);
+            var handler = new UpdateProfileCommandHandler(Context);
             //Act
             //Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
-                await handler.Handle(new UpdateShelterCommand
+                await handler.Handle(new UpdateProfileCommand
                 {
                     Id = Guid.NewGuid(),
                     UserId = SheltersContextFactory.UserAId
@@ -47,13 +46,13 @@ namespace Shelters.Tests.Shelters.Commands
         public async Task UpdateShelterCommandHandler_FailOnWrongUserId()
         {
             //Arrange
-            var handler = new UpdateShelterCommandHandler(Context);
+            var handler = new UpdateProfileCommandHandler(Context);
             //Act
             //Assert
             await Assert.ThrowsAsync<NotFoundException>(async () =>
                 {
                     await handler.Handle(
-                        new UpdateShelterCommand
+                        new UpdateProfileCommand
                         {
                             Id = SheltersContextFactory.ShelterIdForUpdate,
                             UserId = SheltersContextFactory.UserAId

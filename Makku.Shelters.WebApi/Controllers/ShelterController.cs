@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
-using Makku.Shelters.Application.Commands.CreateShelter;
-using Makku.Shelters.Application.Commands.DeleteShelter;
-using Makku.Shelters.Application.Commands.UpdateShelter;
-using Makku.Shelters.Application.Queries.GetShelterDetails;
-using Makku.Shelters.Application.Queries.GetShelterList;
 using Makku.Shelters.WebApi.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using Makku.Shelters.Application.Shelters.Profile.Commands.UpdateProfile;
+using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails;
+using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList;
 
 namespace Makku.Shelters.WebApi.Controllers
 {
@@ -76,32 +74,6 @@ namespace Makku.Shelters.WebApi.Controllers
         }
 
         /// <summary>
-        /// Creates the shelter
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        /// POST /shelter
-        /// {
-        ///     title: "shelter title",
-        ///     details: "shelter details"
-        /// }
-        /// </remarks>
-        /// <param name="createShelterDto">createShelterDto object</param>
-        /// <returns>Returns id (guid)</returns>
-        /// <response code="201">Success</response>
-        /// <response code="401">If the user is unauthorized</response>
-        [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<Guid>> Create([FromBody] CreateShelterDto createShelterDto)
-        {
-            var command = _mapper.Map<CreateShelterCommand>(createShelterDto);
-            command.UserId = UserId;
-            var shelterID = await Mediator.Send(command);
-            return Ok(shelterID);
-        }
-
-        /// <summary>
         /// Updates the shelter
         /// </summary>
         /// <remarks>
@@ -120,33 +92,8 @@ namespace Makku.Shelters.WebApi.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Update([FromBody] UpdateShelterDto updateShelterDto)
         {
-            var command = _mapper.Map<UpdateShelterCommand>(updateShelterDto);
+            var command = _mapper.Map<UpdateProfileCommand>(updateShelterDto);
             command.UserId = UserId;
-            await Mediator.Send(command);
-            return NoContent();
-        }
-
-        /// <summary>
-        /// Deletes the shelter by id
-        /// </summary>
-        /// <remarks>
-        /// Sample request:
-        /// DELETE /shelter/88DEB432-062F-43DE-8DCD-8B6EF79073D3
-        /// </remarks>
-        /// <param name="id">Id of the shelter (guid)</param>
-        /// <returns>Returns NoContent</returns>
-        /// <response code="204">Success</response>
-        /// <response code="401">If the user is unauthorized</response>
-        [HttpDelete("{id}")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Delete(Guid id)
-        {
-            var command = new DeleteShelterProfileCommand
-            {
-                Id = id,
-                UserId = UserId
-            };
             await Mediator.Send(command);
             return NoContent();
         }

@@ -1,5 +1,4 @@
-﻿using Makku.Shelters.Domain.Exceptions;
-using Makku.Shelters.Domain.ShelterProfileValidators;
+﻿using Makku.Shelters.Domain.ShelterProfileValidators;
 
 namespace Makku.Shelters.Domain.ShelterProfileAggregate
 {
@@ -36,13 +35,13 @@ namespace Makku.Shelters.Domain.ShelterProfileAggregate
 
             if (validationResult.IsValid) return objToValidate;
 
-            var exception = new ShelterProfileNotValidException("The user profile is not valid");
-            foreach (var error in validationResult.Errors)
-            {
-                exception.ValidationErrors.Add(error.ErrorMessage);
-            }
+            //var exception = new NotValidException("The user profile is not valid");
+            //foreach (var error in validationResult.Errors)
+            //{
+            //    exception.ValidationErrors.Add(error.ErrorMessage);
+            //}
 
-            throw exception;
+            throw new Exception();
         }
     }
 }

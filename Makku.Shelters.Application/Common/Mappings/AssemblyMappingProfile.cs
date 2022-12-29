@@ -3,7 +3,7 @@ using AutoMapper;
 
 namespace Makku.Shelters.Application.Common.Mappings
 {
-    public class AssemblyMappingProfile:Profile
+    public class AssemblyMappingProfile : Profile
     {
         public AssemblyMappingProfile(Assembly assembly) => ApplyMappingsFromAssembly(assembly);
 

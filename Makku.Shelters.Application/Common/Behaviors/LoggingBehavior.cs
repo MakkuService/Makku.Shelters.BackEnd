@@ -19,7 +19,7 @@ namespace Makku.Shelters.Application.Common.Behaviors
         {
             var requestName = typeof(TRequest).Name;
             var userId = _currentUserService.UserId;
-            Log.Information("Shelters Request: {Name} {@UserId}", requestName, userId, request);
+            Log.Information("Shelters Request: {Name} {@UserId} {@Request}", requestName, userId, request);
 
             var response = await next();
 
