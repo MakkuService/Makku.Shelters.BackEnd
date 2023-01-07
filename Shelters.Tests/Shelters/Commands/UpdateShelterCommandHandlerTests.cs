@@ -17,14 +17,14 @@ namespace Shelters.Tests.Shelters.Commands
             await handler.Handle(
                 new UpdateProfileCommand
                 {
-                    Id = SheltersContextFactory.ShelterIdForUpdate,
-                    UserId = SheltersContextFactory.UserBId,
+                    IdentityShelterId = SheltersContextFactory.ShelterDId,
+                    RequestorGuid = SheltersContextFactory.ShelterDId,
                     Description = newDescription
                 }, CancellationToken.None);
 
             //Assert
-            Assert.NotNull(await Context.Shelters
-                .SingleOrDefaultAsync(s => s.Id == SheltersContextFactory.ShelterIdForUpdate && s.Description == newDescription));
+            Assert.NotNull(await Context.ShelterProfiles
+                .SingleOrDefaultAsync(s => s.ShelterProfileId == SheltersContextFactory.ShelterProfileIdForUpdate && s.Description == newDescription));
         }
 
         [Fact]
@@ -37,8 +37,8 @@ namespace Shelters.Tests.Shelters.Commands
             await Assert.ThrowsAsync<NotFoundException>(async () =>
                 await handler.Handle(new UpdateProfileCommand
                 {
-                    Id = Guid.NewGuid(),
-                    UserId = SheltersContextFactory.UserAId
+                    IdentityShelterId = Guid.NewGuid(),
+                    RequestorGuid = SheltersContextFactory.ShelterAId
                 }, CancellationToken.None));
         }
 
@@ -54,11 +54,10 @@ namespace Shelters.Tests.Shelters.Commands
                     await handler.Handle(
                         new UpdateProfileCommand
                         {
-                            Id = SheltersContextFactory.ShelterIdForUpdate,
-                            UserId = SheltersContextFactory.UserAId
+                            IdentityShelterId = SheltersContextFactory.ShelterProfileIdForUpdate,
+                            RequestorGuid = SheltersContextFactory.ShelterAId
                         },
                         CancellationToken.None);
-
                 });
         }
 

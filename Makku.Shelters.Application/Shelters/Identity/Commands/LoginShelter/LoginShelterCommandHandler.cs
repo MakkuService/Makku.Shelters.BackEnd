@@ -28,26 +28,22 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
         }
         public async Task<CurrentIdentityShelterVm> Handle(LoginShelterCommand request, CancellationToken cancellationToken)
         {
-            try
-            {
-                var identityUser = await ValidateAndGetIdentityAsync(request);
+            var identityUser = await ValidateAndGetIdentityAsync(request);
 
-                var userProfile = await _dbContext.ShelterProfiles
-                    .FirstOrDefaultAsync(up => up.IdentityId == identityUser.Id, cancellationToken:
-                        cancellationToken);
+            var shelterProfile = await _dbContext.ShelterProfiles
+                .FirstOrDefaultAsync(up => up.IdentityId == identityUser.Id, cancellationToken:
+                    cancellationToken);
 
-                return new CurrentIdentityShelterVm
-                {
-                    UserName = identityUser.UserName,
-                    ShelterName = userProfile.BasicInfo.ShelterName,
-                    EmailAddress = request.Email,
-                    Token = GetJwtString(identityUser, userProfile)
-                };
-            }
-            catch (Exception e)
+            if (shelterProfile == null)
+                throw new NotFoundException(nameof(shelterProfile), identityUser.UserName);
+
+            return new CurrentIdentityShelterVm
             {
-                throw new Exception($"{nameof(Shelter)} cannot login.", e);
-            }
+                UserName = identityUser.UserName,
+                ShelterName = shelterProfile.ShelterName,
+                EmailAddress = request.Email,
+                Token = GetJwtString(identityUser, shelterProfile)
+            };
         }
 
         private async Task<IdentityUser> ValidateAndGetIdentityAsync(LoginShelterCommand request)
@@ -55,17 +51,17 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
             var identityUser = await _userManager.FindByEmailAsync(request.Email);
 
             if (identityUser is null)
-                throw new NotFoundException($"{nameof(Shelter)}. Unable to find a user with the specified username.");
+                throw new NotFoundException($"{nameof(ShelterProfile)}. Unable to find a user with the specified username.");
 
             var validPassword = await _userManager.CheckPasswordAsync(identityUser, request.Password);
 
             if (!validPassword)
-                throw new ForbiddenException($"{nameof(Shelter)}. The provided password is incorrect.");
+                throw new ForbiddenException($"{nameof(ShelterProfile)}. The provided password is incorrect.");
 
             return identityUser;
         }
 
-        private string GetJwtString(IdentityUser identityUser, Domain.ShelterProfileAggregate.ShelterProfile userProfile)
+        private string GetJwtString(IdentityUser identityUser, ShelterProfile userProfile)
         {
             var claimsIdentity = new ClaimsIdentity(new[]
             {

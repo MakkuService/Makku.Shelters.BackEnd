@@ -2,6 +2,6 @@
 {
     public class ShelterListVm
     {
-        public IList<ShelterLookupDto> Shelters { get; set; }
+        public IList<ShelterProfileLookupDto> SheltersProfile { get; set; }
     }
 }

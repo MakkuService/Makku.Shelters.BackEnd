@@ -55,45 +55,29 @@ namespace Makku.Shelters.Persistence.Migrations
                 {
                     ShelterProfileId = table.Column<Guid>(type: "uuid", nullable: false),
                     IdentityId = table.Column<string>(type: "text", nullable: false),
-                    BasicInfo_Email = table.Column<string>(type: "text", nullable: false),
-                    BasicInfo_ShelterName = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ShelterProfiles", x => x.ShelterProfileId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shelters",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", maxLength: 250, nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: false),
+                    ShelterName = table.Column<string>(type: "text", nullable: false),
                     Address = table.Column<string>(type: "text", nullable: true),
                     Coordinate = table.Column<string>(type: "text", nullable: true),
-                    Email = table.Column<string>(type: "text", nullable: true),
                     Phone = table.Column<string>(type: "text", nullable: true),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    CumulativeDonate = table.Column<decimal>(type: "numeric", nullable: true),
-                    Donation = table.Column<decimal>(type: "numeric", nullable: true),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    CumulativeDonate = table.Column<decimal>(type: "numeric", nullable: false),
+                    Donation = table.Column<decimal>(type: "numeric", nullable: false),
                     Problems = table.Column<string>(type: "text", nullable: true),
-                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    IsActive = table.Column<bool>(type: "boolean", nullable: true),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false),
                     Inn = table.Column<string>(type: "text", nullable: true),
                     Ogrn = table.Column<string>(type: "text", nullable: true),
                     BankAccount = table.Column<string>(type: "text", nullable: true),
                     Ceo = table.Column<string>(type: "text", nullable: true),
-                    SummDonation = table.Column<decimal>(type: "numeric", nullable: true),
+                    SummDonation = table.Column<decimal>(type: "numeric", nullable: false),
                     FoundDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    NumberOfPeople = table.Column<int>(type: "integer", nullable: true)
+                    Subscribers = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shelters", x => x.Id);
+                    table.PrimaryKey("PK_ShelterProfiles", x => x.ShelterProfileId);
                 });
 
             migrationBuilder.CreateTable(
@@ -238,12 +222,6 @@ namespace Makku.Shelters.Persistence.Migrations
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shelters_Id",
-                table: "Shelters",
-                column: "Id",
-                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -265,9 +243,6 @@ namespace Makku.Shelters.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "ShelterProfiles");
-
-            migrationBuilder.DropTable(
-                name: "Shelters");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

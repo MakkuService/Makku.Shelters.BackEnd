@@ -6,18 +6,21 @@ using System.Security.Claims;
 using Makku.Shelters.Application.Shelters.Profile.Commands.UpdateProfile;
 using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails;
 using Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList;
+using Makku.Shelters.WebApi.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Makku.Shelters.WebApi.Controllers
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
-    public class ShelterController : BaseController
+    public class ShelterProfileController : BaseController
     {
         private readonly IMapper _mapper;
         private readonly UserManager<IdentityUser> _userManager;
 
 
-        public ShelterController(IMapper mapper, UserManager<IdentityUser> userManager)
+        public ShelterProfileController(IMapper mapper, UserManager<IdentityUser> userManager)
         {
             _mapper = mapper;
             _userManager = userManager;
@@ -32,18 +35,11 @@ namespace Makku.Shelters.WebApi.Controllers
         /// </remarks>
         /// <returns>Returns ShelterListVm</returns>
         /// <response code="200">Success</response>
-        /// <response code="401">If the user is unauthorized</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ShelterListVm>> GetAll()
         {
-            var cur = ClaimsPrincipal.Current;
-            var userId = _userManager.GetUserId(cur);
-            var query = new GetShelterListQuery
-            {
-                UserId = UserId
-            };
+            var query = new GetShelterListQuery();
             var vm = await Mediator.Send(query);
             return Ok(vm);
         }
@@ -61,12 +57,10 @@ namespace Makku.Shelters.WebApi.Controllers
         /// <response code="401">If the user in unauthorized</response>
         [HttpGet("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<ShelterDetailsVm>> Get(Guid id)
         {
             var query = new GetShelterDetailsQuery
             {
-                UserId = UserId,
                 Id = id
             };
             var vm = await Mediator.Send(query);
@@ -90,11 +84,14 @@ namespace Makku.Shelters.WebApi.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<IActionResult> Update([FromBody] UpdateShelterDto updateShelterDto)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Update([FromBody] UpdateShelterDto updateShelterDto, CancellationToken cancellationToken)
         {
+            var identityIdClaimValue = HttpContext.GetIdentityIdClaimValue();
             var command = _mapper.Map<UpdateProfileCommand>(updateShelterDto);
-            command.UserId = UserId;
-            await Mediator.Send(command);
+            command.IdentityShelterId = identityIdClaimValue;
+            command.RequestorGuid = identityIdClaimValue;
+            await Mediator.Send(command, cancellationToken);
             return NoContent();
         }
     }

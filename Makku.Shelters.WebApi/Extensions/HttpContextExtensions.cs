@@ -4,7 +4,7 @@ namespace Makku.Shelters.WebApi.Extensions
 {
     public static class HttpContextExtensions
     {
-        public static Guid GetUserProfileIdClaimValue(this HttpContext context)
+        public static Guid GetShelterProfileIdClaimValue(this HttpContext context)
         {
             return GetGuidClaimValue("ShelterProfileId", context);
         }

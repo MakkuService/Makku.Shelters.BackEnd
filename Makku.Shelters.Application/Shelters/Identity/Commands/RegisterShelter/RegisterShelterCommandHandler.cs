@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Security.Claims;
 using Makku.Shelters.Application.Common.Exceptions;
-using Makku.Shelters.Domain.ShelterProfileAggregate;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Makku.Shelters.Domain;
 
@@ -29,34 +28,21 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter
 
         public async Task<CurrentIdentityShelterVm> Handle(RegisterShelterCommand request, CancellationToken cancellationToken)
         {
-            try
+            await ValidateIdentityDoesNotExist(request);
+
+            await using var transaction = await _dbContext.BeginTransactionAsync(cancellationToken);
+
+            var identity = await CreateIdentityShelterAsync(request, transaction, cancellationToken);
+
+            var profile = await CreateShelterProfileAsync(request, transaction, identity, cancellationToken);
+            await transaction.CommitAsync(cancellationToken);
+            return new CurrentIdentityShelterVm
             {
-                await ValidateIdentityDoesNotExist(request);
-
-                await using var transaction = await _dbContext.BeginTransactionAsync(cancellationToken);
-
-                var identity = await CreateIdentityShelterAsync(request, transaction, cancellationToken);
-
-                var profile = await CreateShelterProfileAsync(request, transaction, identity, cancellationToken);
-                await transaction.CommitAsync(cancellationToken);
-                return new CurrentIdentityShelterVm
-                {
-                    UserName = request.Username,
-                    ShelterName = request.ShelterName,
-                    EmailAddress = request.Email,
-                    Token = GetJwtString(identity, profile)
-                };
-            }
-
-            catch (NotValidException ex)
-            {
-                throw new NotValidException($"{nameof(Shelter)} cannot register because input data is not valid. Errors: {string.Join("\n", ex.ValidationErrors)}");
-            }
-
-            catch (Exception e)
-            {
-                throw new Exception($"{nameof(Shelter)} cannot register. Error: {e.Message}");
-            }
+                UserName = request.Username,
+                ShelterName = request.ShelterName,
+                EmailAddress = request.Email,
+                Token = GetJwtString(identity, profile)
+            };
         }
 
         private async Task ValidateIdentityDoesNotExist(RegisterShelterCommand request)
@@ -78,13 +64,10 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter
 
             await transaction.RollbackAsync(cancellationToken);
 
-            var errors = string.Empty;
-            foreach (var identityError in createdIdentity.Errors)
-            {
-                errors += identityError.Description + "\n";
-            }
+            var errors = createdIdentity.Errors
+                .Aggregate(string.Empty, (current, identityError) => current + identityError.Description + "\n");
 
-            throw new NotCreatedException(nameof(Shelter), errors);
+            throw new NotCreatedException(nameof(ShelterProfile), errors);
         }
 
         private async Task<ShelterProfile> CreateShelterProfileAsync(RegisterShelterCommand request,
@@ -93,9 +76,7 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter
         {
             try
             {
-                var profileInfo = BasicInfo.CreateBasicInfo(request.Email, request.ShelterName);
-
-                var profile = ShelterProfile.CreateShelterProfile(identity.Id, profileInfo);
+                var profile = ShelterProfile.CreateShelterProfile(identity.Id, request.Email, request.ShelterName);
                 _dbContext.ShelterProfiles.Add(profile);
                 await _dbContext.SaveChangesAsync(cancellationToken);
                 return profile;

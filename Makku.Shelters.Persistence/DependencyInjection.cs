@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using Makku.Shelters.Application.Interfaces;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
@@ -24,7 +23,6 @@ namespace Makku.Shelters.Persistence
         {
             
             services.AddAuthentication("Bearer")
-                // Adding Jwt Bearer
                 .AddJwtBearer(options =>
                 {
                     options.SaveToken = true;

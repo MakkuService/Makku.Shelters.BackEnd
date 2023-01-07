@@ -19,12 +19,12 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList
 
         public async Task<ShelterListVm> Handle(GetShelterListQuery request, CancellationToken cancellationToken)
         {
-            var shelterQuery = await _dbContext.Shelters
-                .Where(note => note.UserId == request.UserId)
-                .ProjectTo<ShelterLookupDto>(_mapper.ConfigurationProvider)
+            var shelterQuery = await _dbContext.ShelterProfiles
+                //.Where(shelterProfile => shelterProfile.IsActive)
+                .ProjectTo<ShelterProfileLookupDto>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellationToken);
 
-            return new ShelterListVm { Shelters = shelterQuery };
+            return new ShelterListVm { SheltersProfile = shelterQuery };
         }
     }
 }

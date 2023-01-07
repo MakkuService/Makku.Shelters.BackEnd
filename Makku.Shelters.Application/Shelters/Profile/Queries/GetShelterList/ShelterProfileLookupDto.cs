@@ -1,9 +1,9 @@
 ﻿using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Domain;
 
-namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails
+namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList
 {
-    public class ShelterDetailsVm : IMapWith<ShelterProfile>
+    public class ShelterProfileLookupDto : IMapWith<ShelterProfile>
     {
         public Guid ShelterProfileId { get; set; }
         public string ShelterName { get; set; }
@@ -16,7 +16,7 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails
         public decimal? Donation { get; set; }
         public string? Problems { get; set; }
         public DateTime CreatedOn { get; set; }
-        public DateTime? ModifiedOn { get; set; }
+        public DateTime ModifiedOn { get; set; }
         public bool? IsActive { get; set; }
         public string? Inn { get; set; }
         public string? Ogrn { get; set; }
@@ -24,11 +24,10 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails
         public string? Ceo { get; set; }
         public decimal? SummDonation { get; set; }
         public DateTime? FoundDate { get; set; }
-        public int? NumberOfPeople { get; set; }
-
+        public int? Subscribers { get; set; }
         public void Mapping(AutoMapper.Profile profile)
         {
-            profile.CreateMap<ShelterProfile, ShelterDetailsVm>()
+            profile.CreateMap<ShelterProfile, ShelterProfileLookupDto>()
                 .ForMember(shelterVm => shelterVm.ShelterName, opt => opt.MapFrom(shelter => shelter.ShelterName))
                 .ForMember(shelterVm => shelterVm.ShelterProfileId,
                     opt => opt.MapFrom(shelter => shelter.ShelterProfileId))
@@ -50,10 +49,8 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails
                 .ForMember(shelterVm => shelterVm.Ceo, opt => opt.MapFrom(shelter => shelter.Ceo))
                 .ForMember(shelterVm => shelterVm.SummDonation, opt => opt.MapFrom(shelter => shelter.SummDonation))
                 .ForMember(shelterVm => shelterVm.FoundDate, opt => opt.MapFrom(shelter => shelter.FoundDate))
-                .ForMember(shelterVm => shelterVm.NumberOfPeople,
+                .ForMember(shelterVm => shelterVm.Subscribers,
                     opt => opt.MapFrom(shelter => shelter.Subscribers));
         }
-
-
     }
 }

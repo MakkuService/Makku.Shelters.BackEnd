@@ -1,5 +1,5 @@
 ﻿using Makku.Shelters.Application.Common.Mappings;
-using Makku.Shelters.Domain.ShelterProfileAggregate;
+using Makku.Shelters.Domain;
 
 namespace Makku.Shelters.Application.Shelters.Identity
 {
@@ -14,9 +14,9 @@ namespace Makku.Shelters.Application.Shelters.Identity
         {
             profile.CreateMap<ShelterProfile, CurrentIdentityShelterVm>()
                 .ForMember(dest => dest.EmailAddress, opt
-                    => opt.MapFrom(src => src.BasicInfo.Email))
+                    => opt.MapFrom(src => src.Email))
                 .ForMember(dest => dest.ShelterName, opt
-                    => opt.MapFrom(src => src.BasicInfo.ShelterName));
+                    => opt.MapFrom(src => src.ShelterName));
         }
     }
 }

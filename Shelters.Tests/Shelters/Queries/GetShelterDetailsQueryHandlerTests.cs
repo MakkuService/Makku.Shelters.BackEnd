@@ -29,14 +29,13 @@ namespace Shelters.Tests.Shelters.Queries
             var result = await handler.Handle(
                 new GetShelterDetailsQuery
                 {
-                    UserId = SheltersContextFactory.UserBId,
                     Id = Guid.Parse("909F7C29-891B-4BE1-8504-21F84F262084")
                 },
                 CancellationToken.None);
 
             //Assert
             result.ShouldBeOfType<ShelterDetailsVm>();
-            result.Name.ShouldBe("Shelter2");
+            result.ShelterName.ShouldBe("Shelter2");
             result.CreatedOn.ShouldBe(DateTime.Today);
         }
     }

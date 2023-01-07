@@ -31,7 +31,7 @@ namespace Makku.Shelters.Application.Shelters.Identity.Queries.GetCurrentShelter
                 .FirstOrDefaultAsync(up => up.ShelterProfileId == request.ShelterProfileId, cancellationToken);
 
             if (profile == null || profile.IdentityId != profile.IdentityId)
-                throw new NotFoundException(nameof(Shelter), request.ShelterProfileId);
+                throw new NotFoundException(nameof(ShelterProfile), request.ShelterProfileId);
 
             var result = _mapper.Map<CurrentIdentityShelterVm>(profile);
             result.UserName = identity.UserName;

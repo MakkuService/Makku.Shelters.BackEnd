@@ -35,7 +35,7 @@ namespace Makku.Shelters.WebApi.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterShelterDto registerShelterDto, CancellationToken cancellationToken)
         {
-            //todo Возврат CurrentIdentityShelterVm
+            //todo Р’РѕР·РІСЂР°С‚ CurrentIdentityShelterVm
             var command = Mapper.Map<RegisterShelterCommand>(registerShelterDto);
             var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);
@@ -45,7 +45,7 @@ namespace Makku.Shelters.WebApi.Controllers
         [Route("Login")]
         public async Task<IActionResult> Login(LoginShelterDto login, CancellationToken cancellationToken)
         {
-            //todo Возврат CurrentIdentityShelterVm
+            //todo Р’РѕР·РІСЂР°С‚ CurrentIdentityShelterVm
             var command = Mapper.Map<LoginShelterCommand>(login);
             var result = await Mediator.Send(command, cancellationToken);
 
@@ -53,10 +53,30 @@ namespace Makku.Shelters.WebApi.Controllers
         }
 
         [HttpDelete]
-        [Route("Delete")]
+        [Route("DeleteById")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Delete(Guid identityShelterId, CancellationToken token)
+        public async Task<IActionResult> DeleteById(Guid identityShelterId, CancellationToken token)
         {
+            var requestorGuid = HttpContext.GetIdentityIdClaimValue();
+
+            var command = new DeleteShelterCommand
+            {
+                IdentityShelterId = identityShelterId,
+                RequestorGuid = requestorGuid
+            };
+
+            await Mediator.Send(command, token);
+
+            return NoContent();
+        }
+
+        [HttpDelete]
+        [Route("DeleteCurrentShelter")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> DeleteCurrentShelter(CancellationToken token)
+        {
+            var identityShelterId = HttpContext.GetIdentityIdClaimValue();
+
             var requestorGuid = HttpContext.GetIdentityIdClaimValue();
 
             var command = new DeleteShelterCommand
@@ -75,7 +95,7 @@ namespace Makku.Shelters.WebApi.Controllers
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CurrentUser(CancellationToken token)
         {
-            var userProfileId = HttpContext.GetUserProfileIdClaimValue();
+            var userProfileId = HttpContext.GetShelterProfileIdClaimValue();
 
             var query = new GetCurrentShelterQuery { ShelterProfileId = userProfileId, ClaimsPrincipal = HttpContext.User };
             var result = await Mediator.Send(query, token);

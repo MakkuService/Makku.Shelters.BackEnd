@@ -6,7 +6,7 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterList
     {
         public GetShelterListQueryValidator()
         {
-            RuleFor(getShelterListQuery => getShelterListQuery.UserId).NotEqual(Guid.Empty).NotNull();
+            //RuleFor(getShelterListQuery => getShelterListQuery.UserId).NotEqual(Guid.Empty).NotNull();
         }
     }
 }

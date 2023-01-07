@@ -22,11 +22,10 @@ namespace Makku.Shelters.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Makku.Shelters.Domain.Shelter", b =>
+            modelBuilder.Entity("Makku.Shelters.Domain.ShelterProfile", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ShelterProfileId")
                         .ValueGeneratedOnAdd()
-                        .HasMaxLength(250)
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
@@ -44,37 +43,34 @@ namespace Makku.Shelters.Persistence.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<decimal?>("CumulativeDonate")
+                    b.Property<decimal>("CumulativeDonate")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<decimal?>("Donation")
+                    b.Property<decimal>("Donation")
                         .HasColumnType("numeric");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("FoundDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Inn")
-                        .HasColumnType("text");
-
-                    b.Property<bool?>("IsActive")
-                        .HasColumnType("boolean");
-
-                    b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
+                    b.Property<string>("IdentityId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("NumberOfPeople")
-                        .HasColumnType("integer");
+                    b.Property<string>("Inn")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("ModifiedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Ogrn")
                         .HasColumnType("text");
@@ -85,35 +81,15 @@ namespace Makku.Shelters.Persistence.Migrations
                     b.Property<string>("Problems")
                         .HasColumnType("text");
 
-                    b.Property<decimal?>("SummDonation")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Shelters");
-                });
-
-            modelBuilder.Entity("Makku.Shelters.Domain.ShelterProfileAggregate.ShelterProfile", b =>
-                {
-                    b.Property<Guid>("ShelterProfileId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("IdentityId")
+                    b.Property<string>("ShelterName")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<int?>("Subscribers")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("SummDonation")
+                        .HasColumnType("numeric");
 
                     b.HasKey("ShelterProfileId");
 
@@ -314,33 +290,6 @@ namespace Makku.Shelters.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Makku.Shelters.Domain.ShelterProfileAggregate.ShelterProfile", b =>
-                {
-                    b.OwnsOne("Makku.Shelters.Domain.ShelterProfileAggregate.BasicInfo", "BasicInfo", b1 =>
-                        {
-                            b1.Property<Guid>("ShelterProfileId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("Email")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("ShelterName")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("ShelterProfileId");
-
-                            b1.ToTable("ShelterProfiles");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ShelterProfileId");
-                        });
-
-                    b.Navigation("BasicInfo")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

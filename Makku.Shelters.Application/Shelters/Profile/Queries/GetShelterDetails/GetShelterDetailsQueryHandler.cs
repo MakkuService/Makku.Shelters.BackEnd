@@ -20,12 +20,12 @@ namespace Makku.Shelters.Application.Shelters.Profile.Queries.GetShelterDetails
         public async Task<ShelterDetailsVm> Handle(GetShelterDetailsQuery request, CancellationToken cancellationToken)
         {
             var entity =
-                await _dbContext.Shelters.FirstOrDefaultAsync(shelter => shelter.Id == request.Id, cancellationToken);
+                await _dbContext.ShelterProfiles.FirstOrDefaultAsync(shelter => shelter.ShelterProfileId == request.Id, cancellationToken);
 
-            if (entity == null || entity.UserId != request.UserId)
+            if (entity == null || entity.ShelterProfileId != request.Id)
             {
                 //todo сделать кастомные эксепшны и обновить в аналогичных местах
-                throw new Exception(nameof(Shelter));
+                throw new Exception(nameof(ShelterProfile));
             }
 
             return _mapper.Map<ShelterDetailsVm>(entity);

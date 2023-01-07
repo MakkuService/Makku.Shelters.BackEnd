@@ -14,18 +14,23 @@ namespace Makku.Shelters.Application.Shelters.Profile.Commands.UpdateProfile
         public async Task<Unit> Handle(UpdateProfileCommand request,
             CancellationToken cancellationToken)
         {
-            var entity =
-                await _dbContext.Shelters.FirstOrDefaultAsync(note =>
-                    note.Id == request.Id, cancellationToken);
 
-            if (entity == null || entity.UserId != request.UserId)
-            {
-                throw new NotFoundException(nameof(Shelter), request.Id);
-            }
+            var identityShelter = await _dbContext.IdentityShelter(request.IdentityShelterId.ToString(), cancellationToken);
 
-            entity.Name = request.Name;
-            entity.Description = request.Description;
+            if (identityShelter is null)
+                throw new NotFoundException($"{nameof(ShelterProfile)}. Unable to find a shelter with the specified username.");
 
+            var shelterProfile = await _dbContext.ShelterProfiles
+                .FirstOrDefaultAsync(up
+                    => up.IdentityId == request.IdentityShelterId.ToString(), cancellationToken);
+
+            if (shelterProfile == null)
+                throw new NotFoundException(nameof(ShelterProfile), request.IdentityShelterId.ToString());
+
+            if (shelterProfile.IdentityId != request.RequestorGuid.ToString())
+                throw new ForbiddenException($"{nameof(ShelterProfile)}. Cannot update shelterProfile as you are not it's owner.");
+
+            shelterProfile.Description = request.Description;
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return Unit.Value;

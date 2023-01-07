@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Core.Configuration;
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Interfaces;
 using Makku.Shelters.Persistence;
@@ -9,7 +10,6 @@ namespace Shelters.Tests.Common
     {
         public SheltersDbContext Context;
         public IMapper Mapper;
-
         public QueryTestFixture()
         {
             Context = SheltersContextFactory.Create();
@@ -19,7 +19,10 @@ namespace Shelters.Tests.Common
                     typeof(ISheltersDbContext).Assembly));
             });
             Mapper = configurationProvider.CreateMapper();
+
         }
+
+
 
         public void Dispose() => SheltersContextFactory.Destroy(Context);
     }
