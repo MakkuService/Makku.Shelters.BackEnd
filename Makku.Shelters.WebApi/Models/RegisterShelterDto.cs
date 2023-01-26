@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Destructurama.Attributed;
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter;
 
@@ -8,6 +9,8 @@ namespace Makku.Shelters.WebApi.Models
     {
         public string Username { get; set; }
         public string Email { get; set; }
+
+        [NotLogged]
         public string Password { get; set; }
         public string ShelterName { get; set; }
 

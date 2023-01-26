@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using AutoMapper;
+using Destructurama.Attributed;
 using Makku.Shelters.Application.Common.Mappings;
 using Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter;
 
@@ -12,6 +13,7 @@ namespace Makku.Shelters.WebApi.Models
         public string Email { get; set; }
 
         [Required]
+        [NotLogged]
         public string Password { get; set; }
 
         public void Mapping(Profile profile)

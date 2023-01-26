@@ -13,11 +13,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Serilog;
 using Serilog.Events;
+using Destructurama;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
-    .WriteTo.File(path: "Logs/{Date}.log", 
-        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}|{Level:u4}|{Message:lj}{NewLine}{Exception}",
+    .Destructure.UsingAttributes()
+    .Enrich.WithProcessId()
+    .Enrich.WithProcessName()
+    .WriteTo.File(path: "Logs/.log", 
+        outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}|{Level:u3}|{ProcessId}|{ThreadId:x}|{Message:lj}{NewLine}{Exception}",
         rollingInterval: RollingInterval.Day)
     .CreateLogger();
 
