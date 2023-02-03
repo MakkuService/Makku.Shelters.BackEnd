@@ -20,7 +20,7 @@ Log.Logger = new LoggerConfiguration()
     .Destructure.UsingAttributes()
     .Enrich.WithProcessId()
     .Enrich.WithProcessName()
-    .WriteTo.File(path: "Logs/.log", 
+    .WriteTo.File(path: "/app/Logs/.log", 
         outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff}|{Level:u3}|{ProcessId}|{ThreadId:x}|{Message:lj}{NewLine}{Exception}",
         rollingInterval: RollingInterval.Day)
     .CreateLogger();

@@ -11,10 +11,9 @@ namespace Makku.Shelters.Persistence
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration["DbConnection"];
             services.AddDbContext<SheltersDbContext>(opt =>
             {
-                opt.UseNpgsql(connectionString);
+                opt.UseNpgsql(Environment.GetEnvironmentVariable("DbConnection"));
             });
             services.AddScoped<ISheltersDbContext>(provider => provider.GetService<SheltersDbContext>());
             return services;

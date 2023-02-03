@@ -30,4 +30,8 @@
 		<ProjectReference Include="..\Makku.Shelters.Persistence\Makku.Shelters.Persistence.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Logs\" />
+	</ItemGroup>
+
 </Project>
