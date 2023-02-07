@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using System.Security.Principal;
 using AutoMapper;
 using Makku.Shelters.Application.Common.Exceptions;
 using Makku.Shelters.Application.Interfaces;

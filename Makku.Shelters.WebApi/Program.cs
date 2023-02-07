@@ -94,6 +94,11 @@ builder.Services.AddScoped<IdentityService>();
 builder.Services.AddSingleton<ICurrentUserService, CurrentUserService>();
 builder.Services.AddHttpContextAccessor();
 builder.Host.UseSerilog();
+// generate lowercase URLs
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+});
 
 
 var app = builder.Build();

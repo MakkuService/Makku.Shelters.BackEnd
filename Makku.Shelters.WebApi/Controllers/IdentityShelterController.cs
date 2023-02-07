@@ -1,6 +1,7 @@
 using Makku.Shelters.Application.Shelters.Identity;
 using Makku.Shelters.Application.Shelters.Identity.Commands.DeleteShelter;
 using Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter;
+using Makku.Shelters.Application.Shelters.Identity.Commands.LogoutShelter;
 using Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter;
 using Makku.Shelters.Application.Shelters.Identity.Queries.GetCurrentShelter;
 using Makku.Shelters.WebApi.Extensions;
@@ -50,6 +51,14 @@ namespace Makku.Shelters.WebApi.Controllers
             var result = await Mediator.Send(command, cancellationToken);
 
             return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("Logout")]
+        public async Task<IActionResult> Logout(CancellationToken cancellationToken)
+        {
+            await Mediator.Send(new LogoutShelterCommand(), cancellationToken);
+            return Ok();
         }
 
         [HttpDelete]
