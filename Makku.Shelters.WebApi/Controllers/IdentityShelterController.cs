@@ -3,6 +3,7 @@ using Makku.Shelters.Application.Shelters.Identity.Commands.DeleteShelter;
 using Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter;
 using Makku.Shelters.Application.Shelters.Identity.Commands.LogoutShelter;
 using Makku.Shelters.Application.Shelters.Identity.Commands.RegisterShelter;
+using Makku.Shelters.Application.Shelters.Identity.Commands.ResetPassword;
 using Makku.Shelters.Application.Shelters.Identity.Queries.GetCurrentShelter;
 using Makku.Shelters.WebApi.Extensions;
 using Makku.Shelters.WebApi.Models;
@@ -36,7 +37,6 @@ namespace Makku.Shelters.WebApi.Controllers
         [Route("Register")]
         public async Task<IActionResult> Register([FromBody] RegisterShelterDto registerShelterDto, CancellationToken cancellationToken)
         {
-            //todo Возврат CurrentIdentityShelterVm
             var command = Mapper.Map<RegisterShelterCommand>(registerShelterDto);
             var result = await Mediator.Send(command, cancellationToken);
             return Ok(result);
@@ -110,6 +110,24 @@ namespace Makku.Shelters.WebApi.Controllers
             var result = await Mediator.Send(query, token);
 
             return Ok(Mapper.Map<CurrentIdentityShelterVm>(result));
+        }
+
+        [HttpPost]
+        [Route("ResetPassword")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPaePasswordDto)
+        {
+            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+
+            var command = new ResetPasswordCommand
+            {
+                Email = resetPaePasswordDto.Email,
+                Password = resetPaePasswordDto.Password,
+                Token = token.Replace("Bearer ","")
+            };
+
+            await Mediator.Send(command);
+            return NoContent();
         }
 
     }

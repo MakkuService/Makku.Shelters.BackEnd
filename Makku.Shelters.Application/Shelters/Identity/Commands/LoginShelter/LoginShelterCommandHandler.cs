@@ -17,6 +17,7 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IdentityService _identityService;
         private readonly IMapper _mapper;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
         public LoginShelterCommandHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IdentityService identityService, IMapper mapper)
         {
@@ -43,6 +44,8 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
                 EmailAddress = request.Email,
                 Token = GetJwtString(identityUser, shelterProfile)
             };
+
+
         }
 
         private async Task<IdentityUser> ValidateAndGetIdentityAsync(LoginShelterCommand request)
