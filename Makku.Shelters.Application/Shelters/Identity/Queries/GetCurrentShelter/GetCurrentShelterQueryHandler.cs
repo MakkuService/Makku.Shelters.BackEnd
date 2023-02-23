@@ -13,13 +13,15 @@ namespace Makku.Shelters.Application.Shelters.Identity.Queries.GetCurrentShelter
     {
         private readonly ISheltersDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMapper _mapper;
 
-        public GetCurrentShelterQueryHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IMapper mapper)
+        public GetCurrentShelterQueryHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IMapper mapper, SignInManager<IdentityUser> signInManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _mapper = mapper;
+            _signInManager = signInManager;
         }
 
         public async Task<CurrentIdentityShelterVm> Handle(GetCurrentShelterQuery request,
@@ -30,9 +32,9 @@ namespace Makku.Shelters.Application.Shelters.Identity.Queries.GetCurrentShelter
             var profile = await _dbContext.ShelterProfiles
                 .FirstOrDefaultAsync(up => up.ShelterProfileId == request.ShelterProfileId, cancellationToken);
 
-            if (profile == null || profile.IdentityId != profile.IdentityId)
+            if (profile == null)
                 throw new NotFoundException(nameof(ShelterProfile), request.ShelterProfileId);
-
+            
             var result = _mapper.Map<CurrentIdentityShelterVm>(profile);
             result.UserName = identity.UserName;
             return result;

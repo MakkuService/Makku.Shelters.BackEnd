@@ -16,15 +16,14 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
         private readonly ISheltersDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IdentityService _identityService;
-        private readonly IMapper _mapper;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public LoginShelterCommandHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IdentityService identityService, IMapper mapper)
+        public LoginShelterCommandHandler(ISheltersDbContext dbContext, UserManager<IdentityUser> userManager, IdentityService identityService, IMapper mapper, SignInManager<IdentityUser> signInManager)
         {
             _dbContext = dbContext;
             _userManager = userManager;
             _identityService = identityService;
-            _mapper = mapper;
+            _signInManager = signInManager;
         }
         public async Task<CurrentIdentityShelterVm> Handle(LoginShelterCommand request, CancellationToken cancellationToken)
         {
@@ -37,15 +36,18 @@ namespace Makku.Shelters.Application.Shelters.Identity.Commands.LoginShelter
             if (shelterProfile == null)
                 throw new NotFoundException(nameof(shelterProfile), identityUser.UserName);
 
-            return new CurrentIdentityShelterVm
+            var result = await _signInManager.PasswordSignInAsync(identityUser, request.Password, false, false);
+            if (result.Succeeded)
             {
-                UserName = identityUser.UserName,
-                ShelterName = shelterProfile.ShelterName,
-                EmailAddress = request.Email,
-                Token = GetJwtString(identityUser, shelterProfile)
-            };
-
-
+                return new CurrentIdentityShelterVm
+                {
+                    UserName = identityUser.UserName,
+                    ShelterName = shelterProfile.ShelterName,
+                    EmailAddress = request.Email,
+                    Token = GetJwtString(identityUser, shelterProfile)
+                };
+            }
+            throw new ForbiddenException($"{nameof(ShelterProfile)}. The provided token has expired.");
         }
 
         private async Task<IdentityUser> ValidateAndGetIdentityAsync(LoginShelterCommand request)

@@ -22,13 +22,14 @@ namespace Makku.Shelters.WebApi.Controllers
         /// </summary>
         /// <remarks>
         /// Sample request:
-        /// POST /shelter
-        ///{
-        ///    "username": "testUserName1",
-        ///    "email": "testUserName1@test.com",
-        ///    "password": "testUserName!_1",
-        ///    "shelterName": "Test shelter name"
-        ///}
+        /// 
+        ///     POST /register
+        ///     {
+        ///         "username": "testUserName1",
+        ///         "email": "user@example.com",
+        ///         "password": "jkd!21Sdlkj",
+        ///         "shelterName": "Test shelter name"
+        ///     }
         /// </remarks>
         /// <param name="registerShelterDto">registerShelterDto object</param>
         /// <returns>OperationResult&lt;CurrentIdentityShelterVm&gt;</returns>
@@ -42,25 +43,67 @@ namespace Makku.Shelters.WebApi.Controllers
             return Ok(result);
         }
 
+        /// <summary>
+        /// Login as shelter
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /login
+        ///     {
+        ///         "email": "user@example.com",
+        ///         "password": "jkd!21Sdlkj"
+        ///     }
+        /// </remarks>
+        /// <param name="login">LoginShelterDto object</param>
+        /// <returns>OperationResult&lt;CurrentIdentityShelterVm&gt;</returns>
+        /// <response code="200">Success</response>
         [HttpPost]
         [Route("Login")]
         public async Task<IActionResult> Login(LoginShelterDto login, CancellationToken cancellationToken)
         {
-            //todo Р’РѕР·РІСЂР°С‚ CurrentIdentityShelterVm
             var command = Mapper.Map<LoginShelterCommand>(login);
             var result = await Mediator.Send(command, cancellationToken);
 
             return Ok(result);
         }
 
+        /// <summary>
+        /// Logout from shelter
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /logout
+        /// </remarks>
+        /// <response code="200">Success</response>
         [HttpPost]
         [Route("Logout")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Logout(CancellationToken cancellationToken)
         {
-            await Mediator.Send(new LogoutShelterCommand(), cancellationToken);
+            var userProfileId = HttpContext.GetShelterProfileIdClaimValue();
+
+            var query = new LogoutShelterCommand { ShelterProfileId = userProfileId, ClaimsPrincipal = HttpContext.User };
+
+            await Mediator.Send(query, cancellationToken);
             return Ok();
         }
 
+        /// <summary>
+        /// Delete shelter by id
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     POST /deletebyid
+        ///     {
+        ///         "email": "user@example.com",
+        ///         "password": "jkd!21Sdlkj"
+        ///     }
+        /// </remarks>
+        /// <param name="identityShelterId">Shelter id</param>
+        /// <response code="200">Success</response>
         [HttpDelete]
         [Route("DeleteById")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -79,6 +122,13 @@ namespace Makku.Shelters.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Delete current shelter
+        /// </summary>
+        /// <remarks>
+        ///     POST /deletecurrentshelter
+        /// </remarks>
+        /// <response code="200">Success</response>
         [HttpDelete]
         [Route("DeleteCurrentShelter")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -99,6 +149,14 @@ namespace Makku.Shelters.WebApi.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Get info from current shelter
+        /// </summary>
+        /// <remarks>
+        ///     GET /currentshelter
+        /// </remarks>
+        /// <response code="200">Success</response>
+
         [HttpGet]
         [Route("CurrentShelter")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -112,23 +170,24 @@ namespace Makku.Shelters.WebApi.Controllers
             return Ok(Mapper.Map<CurrentIdentityShelterVm>(result));
         }
 
-        [HttpPost]
-        [Route("ResetPassword")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPaePasswordDto)
-        {
-            var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
+        //todo Пока не используем, потом вернуться к этому методу
+        //[HttpPost]
+        //[Route("ResetPassword")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        //public async Task<ActionResult> ResetPassword(ResetPasswordDto resetPaePasswordDto)
+        //{
+        //    var token = HttpContext.Request.Headers["Authorization"].FirstOrDefault();
 
-            var command = new ResetPasswordCommand
-            {
-                Email = resetPaePasswordDto.Email,
-                Password = resetPaePasswordDto.Password,
-                Token = token.Replace("Bearer ","")
-            };
+        //    var command = new ResetPasswordCommand
+        //    {
+        //        Email = resetPaePasswordDto.Email,
+        //        Password = resetPaePasswordDto.Password,
+        //        Token = token.Replace("Bearer ","")
+        //    };
 
-            await Mediator.Send(command);
-            return NoContent();
-        }
+        //    await Mediator.Send(command);
+        //    return NoContent();
+        //}
 
     }
 }
